@@ -13,7 +13,7 @@ git clone https://github.com/Ivancastl/contacts.git
 ### **Paso 2:**
 # Accede al directorio del proyecto.
 ```bash
-cd generador_contactos
+cd contacts
 ```
 
 ### **Paso 3:**
