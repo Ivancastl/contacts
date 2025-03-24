@@ -2,41 +2,47 @@
 
 Este script genera un archivo CSV con números de teléfono aleatorios para ser utilizados como contactos de WhatsApp. Puedes personalizar la cantidad de contactos, la lada de la región y los números fijos.
 
-## Instalación
+## ¿Cómo ejecutar el proyecto?
 
-1. Clona el repositorio:
+### 1. Clonar el repositorio
 
-    ```bash
-    git clone https://github.com/Ivancastl/telegramOSINT.git
-    ```
+Primero, clona este repositorio en tu máquina local usando el siguiente comando:
 
-2. Navega al directorio del proyecto:
+\`\`\`bash
+git clone https://github.com/Ivancastl/contacts.git
+\`\`\`
 
-    ```bash
-    cd telegramOSINT
-    ```
+### 2. Instalar dependencias
 
-3. Instala las dependencias utilizando el archivo `requirements.txt`:
+Una vez que hayas clonado el repositorio, navega a la carpeta del proyecto:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+\`\`\`bash
+cd generador_contactos
+\`\`\`
 
-## Uso
+Luego, instala las dependencias necesarias ejecutando:
 
-1. Ejecuta el script `generar_contacts_csv.py`:
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
 
-    ```bash
-    python generar_contacts_csv.py
-    ```
+### 3. Ejecutar el script
 
-2. Responde a las preguntas que aparecerán en la terminal:
-   - ¿Cómo quieres llamar a los contactos? (Ejemplo: Persona, Usuario, Contacto)
-   - ¿Cuántos números deseas generar? (Ejemplo: 10)
-   - ¿Cuál es la lada de la región? (Ejemplo: 777 para Ciudad de México)
-   - ¿Quieres poner 3 números fijos y el resto aleatorios? (sí/no)
+Para ejecutar el script que genera los contactos, usa el siguiente comando:
 
-3. El archivo CSV con los contactos generados se guardará en el mismo directorio con el nombre `datos_personalizados.csv`.
+\`\`\`bash
+python generar_contacts_csv.py
+\`\`\`
+
+El script te pedirá que ingreses:
+
+- **Cómo quieres llamar a los contactos** (Ejemplo: Persona, Usuario, Contacto).
+- **Cuántos números deseas generar** (Ejemplo: 10).
+- **Cuál es la lada de la región** (Ejemplo: 777 para Ciudad de México).
+- **Si quieres poner 3 números fijos y el resto aleatorios** (Responde "sí" o "no").
+
+El archivo CSV con los contactos generados se guardará en el directorio del proyecto con el nombre **\`datos_personalizados.csv\`**.
+
 
 ## Licencia
 
