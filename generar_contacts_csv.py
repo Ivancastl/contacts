@@ -1,58 +1,56 @@
 import pandas as pd
 import random
 
-# Función para crear los nombres personalizados
+# Crear nombres personalizados
 def crear_nombres(cantidad, prefijo):
     return [f"{prefijo}{i}" for i in range(1, cantidad + 1)]
 
-# Función para crear los números de teléfono
-def crear_telefonos(cantidad, lada, numeros_fijos=None):
+# Crear teléfonos con o sin números fijos
+def crear_telefonos(cantidad, ladas, numeros_fijos=None):
     telefonos = []
     for _ in range(cantidad):
+        lada = random.choice(ladas)
         if numeros_fijos:
-            # Si el usuario elige tener números fijos, lo combina con aleatorios
             telefono = f"{lada}{numeros_fijos}{random.randint(1000, 9999)}"
         else:
-            # Si el usuario no elige números fijos, todo es aleatorio
             telefono = f"{lada}{random.randint(1000000, 9999999)}"
         telefonos.append(telefono)
     return telefonos
 
-# Solicitar al usuario la entrada para personalizar
-prefijo = input("¿Cómo quieres llamar a los contactos? (ejemplo: Persona, Usuario, Contacto): ")
-cantidad = int(input("¿Cuántos números deseas generar? (Ejemplo: 10): "))
-lada = input("¿Cuál es la lada de la región? (Ejemplo: 777 para Ciudad de México): ")
+# Entradas del usuario
+prefijo = input("¿Cómo quieres llamar a los contactos? (ej: Persona, Usuario, Contacto): ").strip()
+cantidad = int(input("¿Cuántos números deseas generar?: "))
 
-# Preguntar si quiere poner 3 números fijos
-usar_numeros_fijos = input("¿Quieres poner 3 números fijos y el resto aleatorios? (sí/no): ").strip().lower()
+# Ingreso de ladas personalizadas
+ladas_input = input("Ingresa las ladas que quieres usar, separadas por comas (ej: 55,33,777): ")
+ladas = [lada.strip() for lada in ladas_input.split(",") if lada.strip().isdigit()]
 
+if not ladas:
+    print("No se ingresaron ladas válidas. Finalizando el programa.")
+    exit()
+
+# Opción de usar números fijos
+usar_fijos = input("¿Quieres usar 3 números fijos después de la lada? (sí/no): ").strip().lower()
 numeros_fijos = ""
-if usar_numeros_fijos in ["sí", "si"]:  # Aceptar tanto "sí" como "si"
-    # Asegurarse de que se ingrese correctamente los tres números fijos
+
+if usar_fijos in ["sí", "si"]:
     while True:
         numeros_fijos = input("Ingresa los 3 números fijos (por ejemplo, 123): ").strip()
         if len(numeros_fijos) == 3 and numeros_fijos.isdigit():
             break
         else:
             print("Por favor, ingresa exactamente 3 números.")
-        
-# Crear los nombres y teléfonos
+
+# Generar datos
 nombres = crear_nombres(cantidad, prefijo)
-telefonos = crear_telefonos(cantidad, lada, numeros_fijos)
+telefonos = crear_telefonos(cantidad, ladas, numeros_fijos)
 
-# Crear un diccionario con los datos
-datos = {
-    "nombre": nombres,
-    "telefono": telefonos
-}
+# Crear DataFrame y guardar CSV
+df = pd.DataFrame({"nombre": nombres, "telefono": telefonos})
 
-# Crear un DataFrame de pandas
-df = pd.DataFrame(datos)
+nombre_archivo = input("Nombre del archivo CSV (ejemplo: contactos_mexico.csv): ").strip()
+if not nombre_archivo.endswith(".csv"):
+    nombre_archivo += ".csv"
 
-# Nombre del archivo .csv
-nombre_archivo = "datos_personalizados.csv"
-
-# Guardar el DataFrame en un archivo .csv
-df.to_csv(nombre_archivo, index=False, encoding='utf-8')
-
-print(f"Se ha creado el archivo CSV: {nombre_archivo}")
+df.to_csv(nombre_archivo, index=False, encoding="utf-8")
+print(f"\n✅ Se ha creado el archivo CSV: {nombre_archivo}")
