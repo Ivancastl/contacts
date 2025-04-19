@@ -1,56 +1,65 @@
 import pandas as pd
 import random
 
-# Crear nombres personalizados
 def crear_nombres(cantidad, prefijo):
     return [f"{prefijo}{i}" for i in range(1, cantidad + 1)]
 
-# Crear teléfonos con o sin números fijos
-def crear_telefonos(cantidad, ladas, numeros_fijos=None):
+def crear_telefonos(cantidad, numeros_fijos, longitud_total):
     telefonos = []
+    digitos_restantes = longitud_total - len(numeros_fijos)
+
     for _ in range(cantidad):
-        lada = random.choice(ladas)
-        if numeros_fijos:
-            telefono = f"{lada}{numeros_fijos}{random.randint(1000, 9999)}"
-        else:
-            telefono = f"{lada}{random.randint(1000000, 9999999)}"
-        telefonos.append(telefono)
+        aleatorios = ''.join(str(random.randint(0, 9)) for _ in range(digitos_restantes))
+        telefonos.append(f"{numeros_fijos}{aleatorios}")
     return telefonos
 
-# Entradas del usuario
-prefijo = input("¿Cómo quieres llamar a los contactos? (ej: Persona, Usuario, Contacto): ").strip()
-cantidad = int(input("¿Cuántos números deseas generar?: "))
+print("📇 Generador de contactos con teléfonos personalizados\n")
 
-# Ingreso de ladas personalizadas
-ladas_input = input("Ingresa las ladas que quieres usar, separadas por comas (ej: 55,33,777): ")
-ladas = [lada.strip() for lada in ladas_input.split(",") if lada.strip().isdigit()]
+# Paso 1: Prefijo para nombres
+prefijo = input("📝 ¿Cómo quieres llamar a los contactos? (ej: Persona, Usuario): ").strip()
 
-if not ladas:
-    print("No se ingresaron ladas válidas. Finalizando el programa.")
-    exit()
+# Paso 2: Cantidad de números a generar
+while True:
+    cantidad_input = input("🔢 ¿Cuántos números deseas generar?: ").strip()
+    if cantidad_input.isdigit() and int(cantidad_input) > 0:
+        cantidad = int(cantidad_input)
+        break
+    print("⚠️ Ingresa un número válido mayor que cero.")
 
-# Opción de usar números fijos
-usar_fijos = input("¿Quieres usar 3 números fijos después de la lada? (sí/no): ").strip().lower()
+# Paso 3: Longitud del número telefónico
+while True:
+    longitud_input = input("📱 ¿Cuántos dígitos debe tener cada número telefónico (ej: 10)?: ").strip()
+    if longitud_input.isdigit() and 5 <= int(longitud_input) <= 15:
+        longitud_total = int(longitud_input)
+        break
+    print("⚠️ Ingresa un número entre 5 y 15.")
+
+# Paso 4: Cuántos dígitos fijos dejar
+while True:
+    fijos_input = input(f"🔒 ¿Cuántos dígitos de los {longitud_total} deseas dejar fijos al inicio?: ").strip()
+    if fijos_input.isdigit() and 0 <= int(fijos_input) < longitud_total:
+        longitud_fijos = int(fijos_input)
+        break
+    print(f"⚠️ Debe ser un número entre 0 y {longitud_total - 1}.")
+
+# Paso 5: Ingreso de los dígitos fijos
 numeros_fijos = ""
-
-if usar_fijos in ["sí", "si"]:
+if longitud_fijos > 0:
     while True:
-        numeros_fijos = input("Ingresa los 3 números fijos (por ejemplo, 123): ").strip()
-        if len(numeros_fijos) == 3 and numeros_fijos.isdigit():
+        numeros_fijos = input(f"🔢 Ingresa los {longitud_fijos} dígitos fijos: ").strip()
+        if numeros_fijos.isdigit() and len(numeros_fijos) == longitud_fijos:
             break
-        else:
-            print("Por favor, ingresa exactamente 3 números.")
+        print(f"⚠️ Por favor, ingresa exactamente {longitud_fijos} dígitos numéricos.")
 
-# Generar datos
+# Generar nombres y teléfonos
 nombres = crear_nombres(cantidad, prefijo)
-telefonos = crear_telefonos(cantidad, ladas, numeros_fijos)
+telefonos = crear_telefonos(cantidad, numeros_fijos, longitud_total)
 
-# Crear DataFrame y guardar CSV
+# Crear y guardar CSV
 df = pd.DataFrame({"nombre": nombres, "telefono": telefonos})
+archivo = input("💾 Nombre del archivo CSV (ej: contactos.csv): ").strip()
+if not archivo.endswith(".csv"):
+    archivo += ".csv"
 
-nombre_archivo = input("Nombre del archivo CSV (ejemplo: contactos_mexico.csv): ").strip()
-if not nombre_archivo.endswith(".csv"):
-    nombre_archivo += ".csv"
-
-df.to_csv(nombre_archivo, index=False, encoding="utf-8")
-print(f"\n✅ Se ha creado el archivo CSV: {nombre_archivo}")
+df.to_csv(archivo, index=False, encoding="utf-8")
+print(f"\n✅ ¡Archivo guardado exitosamente como '{archivo}' con {cantidad} contactos!")
