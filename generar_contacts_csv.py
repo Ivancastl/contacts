@@ -1,5 +1,15 @@
 import pandas as pd
 import random
+import os
+import pyfiglet
+
+def show_banner():
+    """Muestra el banner ASCII art"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(pyfiglet.figlet_format("ContactGen", font="slant"))
+    print("📇 Generador profesional de contactos personalizados")
+    print("⌨️ Creado por @ivancastl | Telegram: t.me/+_g4DIczsuI9hOWZh")
+    print("="*60 + "\n")
 
 def crear_nombres(cantidad, prefijo):
     return [f"{prefijo}{i}" for i in range(1, cantidad + 1)]
@@ -13,7 +23,8 @@ def crear_telefonos(cantidad, numeros_fijos, longitud_total):
         telefonos.append(f"{numeros_fijos}{aleatorios}")
     return telefonos
 
-print("📇 Generador de contactos con teléfonos personalizados\n")
+# Mostrar banner
+show_banner()
 
 # Paso 1: Prefijo para nombres
 prefijo = input("📝 ¿Cómo quieres llamar a los contactos? (ej: Persona, Usuario): ").strip()
